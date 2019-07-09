@@ -43,5 +43,34 @@ describe('Categories Model', () => {
           });
       });
   });
+  
+  it('can delete() a category', () => {
+    let obj = {name: 'Test Category' };
+    return categories.create(obj)
+      .then(record => {
+        return categories.get(record._id)
+          .then(category => {
+            categories.delete(category._id)
+              .then(gone => {
+                expect(category[0].toBeUndefined);
+              });
+          });
+      });
+  });
+
+  it('can update() a category', () => {
+    let obj = {name: 'test category', _id: '6'};
+    let updatedObj = {name: 'it changed!', id:'7'};
+    return categories.create(obj)
+      .then(record => {
+        return categories.get(record._id)
+          .then(newCategory => {
+            categories.update(newCategory._id, updatedObj)
+              .then(result => {
+                expect(result.toEqual(updatedObj));
+              });
+          });
+      });
+  });
 
 });
